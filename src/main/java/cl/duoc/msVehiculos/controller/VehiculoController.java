@@ -105,8 +105,6 @@ public class VehiculoController {
         }
     }
 
-////////////////////////////////
-
     @GetMapping("/tipo/{nombre}")
     public ResponseEntity<TipoVehiculo> obtenerTipoPorNombre(@PathVariable String nombre){
         try {
@@ -117,7 +115,6 @@ public class VehiculoController {
         }
     }
 
-
     @GetMapping("/marca/{nombre}")
     public ResponseEntity<MarcaVehiculo> obtenerMarcaPorNombre(@PathVariable String nombre){
         try {
@@ -127,8 +124,4 @@ public class VehiculoController {
             return ResponseEntity.notFound().build();
         }
     }
-
-
-
-
 }

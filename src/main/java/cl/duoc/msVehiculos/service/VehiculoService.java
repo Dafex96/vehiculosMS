@@ -64,9 +64,6 @@ public class VehiculoService {
         return vehiculoRepo.save(vehiculoAnt); 
     }
 
-
-
-
     public TipoVehiculo buscarTipoPorNombre(String nombre){
         return tipoRepo.findByNombre(nombre).orElseThrow(() -> new RuntimeException("Tipo de vehiculo no encontrado..."));
     }
