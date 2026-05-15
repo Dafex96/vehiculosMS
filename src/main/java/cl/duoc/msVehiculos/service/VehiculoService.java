@@ -3,6 +3,8 @@ package cl.duoc.msVehiculos.service;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import cl.duoc.msVehiculos.dto.VehiculoDTO;
 import cl.duoc.msVehiculos.model.MarcaVehiculo;
 import cl.duoc.msVehiculos.model.TipoVehiculo;
 import cl.duoc.msVehiculos.model.Vehiculo;
@@ -71,4 +73,18 @@ public class VehiculoService {
     public MarcaVehiculo buscarMarcaPorNombre(String nombre){
         return marcaRepo.findByNombre(nombre).orElseThrow(() -> new RuntimeException("Marca no encontrada..."));
     }
+
+    public VehiculoDTO buscarDTOPorId(Integer id){
+        Vehiculo vehiculo = buscarPorId(id);
+
+        VehiculoDTO vehiculoDTO = new VehiculoDTO();
+
+        vehiculoDTO.setId(vehiculo.getIdVehiculo());
+        vehiculoDTO.setPatente(vehiculo.getPatente());
+        vehiculoDTO.setMarca(vehiculo.getMarcaVehiculo().getNombre());
+        vehiculoDTO.setModelo(vehiculo.getTipoVehiculo().getNombre());
+
+        return vehiculoDTO;
+    }
+
 }
