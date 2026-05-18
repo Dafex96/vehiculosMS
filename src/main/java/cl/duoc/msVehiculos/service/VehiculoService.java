@@ -3,7 +3,6 @@ package cl.duoc.msVehiculos.service;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import cl.duoc.msVehiculos.dto.VehiculoDTO;
 import cl.duoc.msVehiculos.model.MarcaVehiculo;
 import cl.duoc.msVehiculos.model.TipoVehiculo;
@@ -17,7 +16,11 @@ public class VehiculoService {
 
     @Autowired
     private VehiculoRepository vehiculoRepo;
+    
+    @Autowired
     private TipoVehiRepository tipoRepo;
+
+    @Autowired
     private MarcaRepository marcaRepo;
 
     public List<Vehiculo> listarVehiculos(){
