@@ -31,10 +31,10 @@ public class DataLoader {
                 tipoRepo.save(tipo3);
                 tipoRepo.save(tipo4);
 
-                MarcaVehiculo marca1 = new MarcaVehiculo(null, "Toyota");
-                MarcaVehiculo marca2 = new MarcaVehiculo(null, "Mazda");
-                MarcaVehiculo marca3 = new MarcaVehiculo(null, "Chevrolet");
-                MarcaVehiculo marca4 = new MarcaVehiculo(null, "Hyundai");
+                MarcaVehiculo marca1 = new MarcaVehiculo(null, "Toyota", "Corolla");
+                MarcaVehiculo marca2 = new MarcaVehiculo(null, "Yamaha", "R15");
+                MarcaVehiculo marca3 = new MarcaVehiculo(null, "Chevrolet", "Montana");
+                MarcaVehiculo marca4 = new MarcaVehiculo(null, "Hyundai", "Porter");
 
                 marcaRepo.save(marca1);
                 marcaRepo.save(marca2);
@@ -43,8 +43,8 @@ public class DataLoader {
 
                 Vehiculo vehiculo1 = new Vehiculo(null, "HF3456", 2019, "Rojo", 12354, marca1, tipo1);
                 Vehiculo vehiculo2 = new Vehiculo(null, "GH7890", 2020, "Azul", 56789, marca2, tipo2);
-                Vehiculo vehiculo3 = new Vehiculo(null, "IJ1234", 2018, "Blanco", 23456, marca3, tipo3);
-                Vehiculo vehiculo4 = new Vehiculo(null, "KL5678", 2021, "Negro", 78901, marca4, tipo4);
+                Vehiculo vehiculo3 = new Vehiculo(null, "IJ1234", 2018, "Negro", 23456, marca3, tipo3);
+                Vehiculo vehiculo4 = new Vehiculo(null, "KL5678", 2021, "Blanco", 78901, marca4, tipo4);
 
                 vehiRepo.save(vehiculo1);
                 vehiRepo.save(vehiculo2);

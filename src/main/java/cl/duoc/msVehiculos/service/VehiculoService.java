@@ -85,7 +85,7 @@ public class VehiculoService {
         vehiculoDTO.setId(vehiculo.getIdVehiculo());
         vehiculoDTO.setPatente(vehiculo.getPatente());
         vehiculoDTO.setMarca(vehiculo.getMarcaVehiculo().getNombre());
-        vehiculoDTO.setModelo(vehiculo.getTipoVehiculo().getNombre());
+        vehiculoDTO.setModelo(vehiculo.getMarcaVehiculo().getModelo());
 
         return vehiculoDTO;
     }

@@ -10,5 +10,4 @@ public class MsVehiculosApplication {
 		SpringApplication.run(MsVehiculosApplication.class, args);
 		System.out.println("Running...");
 	}
-
 }
