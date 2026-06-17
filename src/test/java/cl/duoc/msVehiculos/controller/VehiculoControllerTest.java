@@ -1,5 +1,6 @@
 package cl.duoc.msVehiculos.controller;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;  
@@ -146,5 +147,114 @@ public class VehiculoControllerTest {
                      .andExpect(jsonPath("$.modelo").value("GR Yaris"));
        }
 
+       @Test
+       void listarTipos_retorna200() throws Exception {
+              List<TipoVehiculo> listaTipos = new ArrayList<>();
+              listaTipos.add(new TipoVehiculo(1, "Auto"));
+              when(vehiculoService.listarTipos()).thenReturn(listaTipos);
+
+              llamadaFalsa.perform(get("/api/v1/vehiculos/listar_tipos"))
+                     .andExpect(status().isOk())
+                     .andExpect(jsonPath("$[0].nombre").value("Auto"));
+       }
+
+       @Test
+       void listarTipos_retorna204() throws Exception {
+              when(vehiculoService.listarTipos()).thenReturn(new ArrayList<>());
+              llamadaFalsa.perform(get("/api/v1/vehiculos/listar_tipos"))
+                     .andExpect(status().isNoContent());
+       }
+
+       @Test
+       void listarMarcas_retorna200() throws Exception {
+              List<MarcaVehiculo> listaMarcas = new ArrayList<>();
+              listaMarcas.add(new MarcaVehiculo(1, "Toyota", "GR Yaris"));
+              when(vehiculoService.listarMarcas()).thenReturn(listaMarcas);
+
+              llamadaFalsa.perform(get("/api/v1/vehiculos/listar_marcas"))
+                     .andExpect(status().isOk())
+                     .andExpect(jsonPath("$[0].nombre").value("Toyota"));
+       }
+
+       @Test
+       void listarMarcas_retorna204() throws Exception {
+              when(vehiculoService.listarMarcas()).thenReturn(new ArrayList<>());
+              llamadaFalsa.perform(get("/api/v1/vehiculos/listar_marcas"))
+                     .andExpect(status().isNoContent());
+       }
+
+       @Test
+       void obtenerVehiculoDTO_retorna404() throws Exception {
+              when(vehiculoService.buscarDTOPorId(99)).thenThrow(new RuntimeException("No encontrado"));
+              llamadaFalsa.perform(get("/api/v1/vehiculos/dto/99"))
+                     .andExpect(status().isNotFound());
+       }
+
+       @Test
+       void buscarPorPatente_retorna200() throws Exception {
+              when(vehiculoService.buscarPorPatente("ABC123")).thenReturn(vehiculoEjemplo);
+              llamadaFalsa.perform(get("/api/v1/vehiculos/patente/ABC123"))
+                     .andExpect(status().isOk())
+                     .andExpect(jsonPath("$.patente").value("ABC123"));
+       }
+
+       @Test
+       void buscarPorPatente_retorna404() throws Exception {
+              when(vehiculoService.buscarPorPatente("ZZZ999")).thenThrow(new RuntimeException("No encontrado"));
+              llamadaFalsa.perform(get("/api/v1/vehiculos/patente/ZZZ999"))
+                     .andExpect(status().isNotFound());
+       }
+
+       @Test
+       void actualizar_retorna200() throws Exception {
+              when(vehiculoService.actualizarVehiculo(any(Integer.class), any(Vehiculo.class))).thenReturn(vehiculoEjemplo);
+
+              llamadaFalsa.perform(put("/api/v1/vehiculos/1")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content("{\"patente\":\"ABC123\"}"))
+                     .andExpect(status().isOk())
+                     .andExpect(jsonPath("$.patente").value("ABC123"));
+       }
+
+       @Test
+       void actualizar_retorna404() throws Exception {
+              when(vehiculoService.actualizarVehiculo(any(Integer.class), any(Vehiculo.class)))
+                     .thenThrow(new RuntimeException("Vehiculo no existe"));
+
+              llamadaFalsa.perform(put("/api/v1/vehiculos/99")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content("{\"patente\":\"ABC123\"}"))
+                     .andExpect(status().isNotFound());
+       }
+
+       @Test
+       void obtenerTipoPorNombre_retorna200() throws Exception {
+              when(vehiculoService.buscarTipoPorNombre("Auto")).thenReturn(new TipoVehiculo(1, "Auto"));
+              llamadaFalsa.perform(get("/api/v1/vehiculos/tipo/Auto"))
+                     .andExpect(status().isOk())
+                     .andExpect(jsonPath("$.nombre").value("Auto"));
+       }
+
+       @Test
+       void obtenerTipoPorNombre_retorna404() throws Exception {
+              when(vehiculoService.buscarTipoPorNombre("Avion")).thenThrow(new RuntimeException("No encontrado"));
+              llamadaFalsa.perform(get("/api/v1/vehiculos/tipo/Avion"))
+                     .andExpect(status().isNotFound());
+       }
+
+       @Test
+       void obtenerMarcaPorNombre_retorna200() throws Exception {
+              when(vehiculoService.buscarMarcaPorNombre("Toyota")).thenReturn(new MarcaVehiculo(1, "Toyota", "GR Yaris"));
+              llamadaFalsa.perform(get("/api/v1/vehiculos/marca/Toyota"))
+                     .andExpect(status().isOk())
+                     .andExpect(jsonPath("$.nombre").value("Toyota"));
+       }
+
+       @Test
+       void obtenerMarcaPorNombre_retorna404() throws Exception {
+              when(vehiculoService.buscarMarcaPorNombre("Lada")).thenThrow(new RuntimeException("No encontrado"));
+              llamadaFalsa.perform(get("/api/v1/vehiculos/marca/Lada"))
+                     .andExpect(status().isNotFound());
+       }
 
 }

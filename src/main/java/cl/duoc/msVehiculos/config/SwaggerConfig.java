@@ -13,8 +13,8 @@ public class SwaggerConfig {
         
         return new OpenAPI()
                 .info(new Info()
-                        .title("MS Vehículos API")
+                        .title("API MS Vehículos")
                         .version("1.0")
-                        .description("API para la gestión de vehículos en el sistema de alquiler de vehículos"));
+                        .description("API para la gestión de vehículos en el sistema de Taller Mecanico"));
     }
 }
