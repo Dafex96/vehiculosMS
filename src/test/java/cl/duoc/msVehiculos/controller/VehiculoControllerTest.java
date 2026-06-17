@@ -18,6 +18,7 @@ import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import cl.duoc.msVehiculos.dto.VehiculoDTO;
 import cl.duoc.msVehiculos.model.MarcaVehiculo;
 import cl.duoc.msVehiculos.model.TipoVehiculo;
 import cl.duoc.msVehiculos.model.Vehiculo;
@@ -30,6 +31,7 @@ public class VehiculoControllerTest {
        private VehiculoService vehiculoService; // Simula el servicio para las pruebas
 
        private Vehiculo vehiculoEjemplo;
+       private VehiculoDTO vehiculoEjemploDTO;
        
        @Autowired
        private MockMvc llamadaFalsa; // Permite simular llamadas HTTP al controlador
@@ -45,6 +47,12 @@ public class VehiculoControllerTest {
               vehiculoEjemplo.setColor("Rojo");
               vehiculoEjemplo.setKilometraje(2342342);
               vehiculoEjemplo.setTipoVehiculo(new TipoVehiculo(1, "Auto"));
+       
+              vehiculoEjemploDTO = new VehiculoDTO();
+              vehiculoEjemploDTO.setId(1);
+              vehiculoEjemploDTO.setPatente("ABC123");
+              vehiculoEjemploDTO.setMarca("Toyota");
+              vehiculoEjemploDTO.setModelo("GR Yaris");
        }
 
        @Test
@@ -53,7 +61,7 @@ public class VehiculoControllerTest {
               when(vehiculoService.buscarPorId(1)).thenReturn(vehiculoEjemplo);
 
               // ACT & ASSERT: se hace la llamada al endpoint y se espera un status 200
-              llamadaFalsa.perform(get("/api/v1/vehiculos/1"))
+              llamadaFalsa.perform(get("/api/v1/vehiculos/id/1"))
                      .andExpect(status().isOk());
        }
 
@@ -63,7 +71,7 @@ public class VehiculoControllerTest {
               when(vehiculoService.buscarPorId(99)).thenThrow(new RuntimeException("Vehiculo no encontrado..."));
 
               // ACT & ASSERT: se hace la llamada al endpoint y se espera un status 404
-              llamadaFalsa.perform(get("/api/v1/vehiculos/99"))
+              llamadaFalsa.perform(get("/api/v1/vehiculos/id/99"))
                      .andExpect(status().isNotFound());
        }
 
@@ -126,15 +134,16 @@ public class VehiculoControllerTest {
        }
 
        @Test
-       void obtenerDoctorDTO_retorna200() throws Exception {
+       void obtenerVehiculoDTO_retorna200() throws Exception {
               // ARRANGE
-              when(vehiculoService.buscarPorId(1)).thenReturn(vehiculoEjemplo);
+              when(vehiculoService.buscarDTOPorId(1)).thenReturn(vehiculoEjemploDTO);
 
               // ACT + ASSERT
               llamadaFalsa.perform(get("/api/v1/vehiculos/dto/1"))
                      .andExpect(status().isOk())
-                     .andExpect(jsonPath("$[0].patente").value("ABC123"))
-                     .andExpect(jsonPath("$[0].marcaVehiculo.nombre").value("Toyota"));
+                     .andExpect(jsonPath("$.patente").value("ABC123"))
+                     .andExpect(jsonPath("$.marca").value("Toyota"))
+                     .andExpect(jsonPath("$.modelo").value("GR Yaris"));
        }
 
 
